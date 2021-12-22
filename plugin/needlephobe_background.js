@@ -18,18 +18,20 @@ async function main() {
       let imageElement = new Image();
 
       imageElement.onload = () => {
-        let image = tf.browser.fromPixels(imageElement);
-        let resizedImage = tf.image
-          .resizeBilinear(image, [224, 224])
-          .toFloat()
-          .div(tf.scalar(255))
-          .reshape([224, 224, 3])
-          .expandDims(0);
+        tf.tidy(() => {
+          let image = tf.browser.fromPixels(imageElement);
+          let resizedImage = tf.image
+            .resizeBilinear(image, [224, 224])
+            .toFloat()
+            .div(tf.scalar(255))
+            .reshape([224, 224, 3])
+            .expandDims(0);
 
-        let prediction = model.predict(resizedImage);
-        let isNeedle = prediction.dataSync()[0] < -2;
-        cachedUrls[request.url] = isNeedle;
-        sendResponse({ isNeedle: isNeedle });
+          let prediction = model.predict(resizedImage);
+          let isNeedle = prediction.dataSync()[0] < -2;
+          cachedUrls[request.url] = isNeedle;
+          sendResponse({ isNeedle: isNeedle });
+        });
       };
 
       imageElement.src = request.url;
