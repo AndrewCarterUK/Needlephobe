@@ -8,7 +8,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from argparse import ArgumentParser
 
 # Constants
-IMAGE_SHAPE = (224, 224)
+IMAGE_SHAPE = (300, 300)
 BATCH_SIZE = 16
 EPOCHS = 20
 
@@ -37,10 +37,10 @@ def main():
         batch_size=BATCH_SIZE, directory=validation_data_path, shuffle=True, target_size=IMAGE_SHAPE, class_mode='binary')
 
     # Build the model
-    mobilenet_v2 = 'https://tfhub.dev/google/tf2-preview/mobilenet_v2/feature_vector/4'
+    efficientnet_v2 = 'https://tfhub.dev/google/imagenet/efficientnet_v2_imagenet21k_ft1k_b3/feature_vector/2'
 
     model = Sequential([
-        hub.KerasLayer(mobilenet_v2, input_shape=(
+        hub.KerasLayer(efficientnet_v2, input_shape=(
             IMAGE_SHAPE + (3,)), trainable=False),
         Dropout(0.4),
         Dense(1)

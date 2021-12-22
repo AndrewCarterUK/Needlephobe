@@ -21,10 +21,10 @@ async function main() {
         tf.tidy(() => {
           let image = tf.browser.fromPixels(imageElement);
           let resizedImage = tf.image
-            .resizeBilinear(image, [224, 224])
+            .resizeBilinear(image, [300, 300])
             .toFloat()
             .div(tf.scalar(255))
-            .reshape([224, 224, 3])
+            .reshape([300, 300, 3])
             .expandDims(0);
 
           let prediction = model.predict(resizedImage);
