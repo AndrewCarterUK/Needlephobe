@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "Needlephobe",
+  "version": "0.1",
+  "description": "Hide pictures of needles",
+  "background": {
+    "scripts": ["tf.min.js", "needlephobe_background.js"],
+    "persistent": true
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["needlephobe_foreground.js"]
+    }
+  ],
+  "web_accessible_resources": ["resources/*"],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}
