@@ -13,7 +13,7 @@ async function main() {
     sendResponse
   ) {
     if (request.url in cachedUrls) {
-      sendResponse({ isNeedle: cachedUrls[request.url] });
+      sendResponse(cachedUrls[request.url]);
     } else {
       let imageElement = new Image();
 
@@ -27,10 +27,10 @@ async function main() {
             .reshape([300, 300, 3])
             .expandDims(0);
 
-          let prediction = model.predict(resizedImage);
-          let isNeedle = prediction.dataSync()[0] < -2;
-          cachedUrls[request.url] = isNeedle;
-          sendResponse({ isNeedle: isNeedle });
+          let prediction = model.predict(resizedImage).dataSync()[0];
+          let result = { isNeedle: prediction < -1 };
+          cachedUrls[request.url] = result;
+          sendResponse(result);
         });
       };
 
